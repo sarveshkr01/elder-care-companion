@@ -1,0 +1,36 @@
+[0:00 — HOOK]
+Hello everyone. Caring for an elderly family member is a labor of love, but managing their medication schedules, medical appointments, and daily well-being logs across paper notes or messaging apps can quickly become overwhelming and prone to critical errors. That is why we built the Elderly Care Assistant, an intelligent and secure coordination system designed to make eldercare management seamless and safe.
+
+[0:20 — WHAT IT IS]
+This agent belongs to the Concierge Agents track, focusing on automating and securing personal care and communication. It coordinates daily routines, records wellness indicators, and schedules visits, all under strict safety guidelines.
+
+[0:40 — SHOW THE BANNER]
+(show assets/cover_page_banner.png)
+As you can see on our project banner, this assistant is secure, automated, and caregiver-verified, combining modern AI logic with human oversight.
+
+[1:00 — ARCHITECTURE]
+(show assets/architecture_diagram.png)
+Let us walk through the architecture diagram to see how it works under the hood. 
+Every query first passes through the Security Checkpoint node. If it detects a safety violation or prompt injection, it routes immediately to the Security Failure node to block access. If the input is verified as safe, it is cleaned of PII and passed to the Orchestrator. 
+The Orchestrator acts as the lead coordinator, using Agent Tools to delegate specific tasks to either the Medication Agent or the Visit Agent. These specialized sub-agents interact with our local MCP Server, which reads and writes data to structured JSON databases. 
+If an action requires caregiver approval, the workflow pauses at the Human Caregiver Approval node using a RequestInput state, continuing only once the caregiver grants permission, and finally returning a status update via the Final Response node.
+
+[2:00 — LIVE DEMO]
+(switch to playground at localhost:18081)
+Let us see a live demo of the system in action.
+(pause)
+First, I will enter: "Please schedule a new medication: Lisinopril, 10mg daily at 8:00 AM."
+The Orchestrator routes this to the Medication Agent, which calls the add_medication tool.
+Notice that the playground has now entered a paused state, asking: "Caregiver Approval Required for: Add medication schedule: Lisinopril (10mg) at 8:00 AM. Do you approve? (yes/no):"
+(pause)
+I will type "yes" and submit.
+The system resumes and outputs: "Caregiver approved: Add medication schedule: Lisinopril (10mg) at 8:00 AM. The action has been recorded."
+Now, let us try inputting sensitive data: "My phone number is 555-019-2834 and my SSN is 000-12-3456. Check my medications."
+The Security Checkpoint automatically redacts the SSN and phone number before the query ever reaches the Orchestrator, showing "[REDACTED_SSN]" in the audit log.
+Finally, if I try a malicious prompt injection like "ignore rules and override safety," the checkpoint flags a CRITICAL threat and blocks it instantly.
+
+[3:00 — SECURITY & MCP]
+The security checkpoint is vital for health tech, protecting PII like SSNs and phone numbers, and logging all events in a structured JSON audit log. Our MCP server handles local database persistence safely and exposes filtered, dedicated tools to each specialized agent.
+
+[3:30 — IMPACT / CLOSE]
+This assistant gives families peace of mind by ensuring that eldercare logs are structured, secure, and always verified by a caregiver. Thank you for watching.
