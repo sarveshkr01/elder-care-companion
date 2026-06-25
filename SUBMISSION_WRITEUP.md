@@ -9,26 +9,42 @@ Elder Care Companion provides a secure, centralized, and AI-powered solution tha
 ---
 
 ## Solution Architecture
+## Solution Architecture
+
+```mermaid
 graph TD
     START[User Input] --> SecCheck[Security Checkpoint Node]
-    
+
     SecCheck -->|unsafe / injection| SecFail[Security Failure Node]
     SecCheck -->|safe| Orch[Orchestrator Agent]
-    
+
     Orch -->|delegates to| MedAgent[Medication Agent]
     Orch -->|delegates to| VisitAgent[Visit Agent]
-    
+
     MedAgent -->|uses| MedMCP[MCP: medications.json / wellbeing.json]
     VisitAgent -->|uses| VisitMCP[MCP: appointments.json]
-    
+
     Orch --> CheckApp[Check Approval Required Node]
     MedAgent --> CheckApp
     VisitAgent --> CheckApp
-    
+
     CheckApp -->|needs approval| HITL[Human Caregiver Approval Node]
     CheckApp -->|no approval| Final[Final Response Node]
-    
+
     HITL -->|approves/denies| Final
+
+    style START fill:#1e293b,color:#fff
+    style SecCheck fill:#0f766e,color:#fff
+    style SecFail fill:#b91c1c,color:#fff
+    style Orch fill:#2563eb,color:#fff
+    style MedAgent fill:#7c3aed,color:#fff
+    style VisitAgent fill:#7c3aed,color:#fff
+    style MedMCP fill:#374151,color:#fff
+    style VisitMCP fill:#374151,color:#fff
+    style CheckApp fill:#d97706,color:#fff
+    style HITL fill:#059669,color:#fff
+    style Final fill:#16a34a,color:#fff
+```
 
 
 ### Concepts Used
