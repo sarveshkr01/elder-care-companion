@@ -9,7 +9,6 @@ Elder Care Companion provides a secure, centralized, and AI-powered solution tha
 ---
 
 ## Solution Architecture
-## Solution Architecture
 
 ```mermaid
 graph TD
